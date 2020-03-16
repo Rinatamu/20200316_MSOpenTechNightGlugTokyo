@@ -1,9 +1,9 @@
 Power Apps Hands on
 ---
 
-# 2. 環境準備/ログイン
+# 1. 環境準備/ログイン
 
-## 2.1. Power Apps コミュニティプランの新規作成
+## 1.1. Power Apps コミュニティプランの新規作成
 
 既にコミュニティプランをお持ちの方は<br>
 スキップしていただいて構いません。
@@ -27,7 +27,7 @@ https://powerapps.microsoft.com/ja-jp/communityplan/
 6. アカウントの詳細を入力して「開始」をクリックする
 ![](pasteimage/2020-03-15-19-47-05.png)
 
-## 2.2. Azure の新規登録
+## 1.2. Azure の新規登録
 
 既にAzureをご利用中の場合はスキップして頂いて<br>
 構いません。
@@ -48,9 +48,9 @@ https://azure.microsoft.com/ja-jp/
 ![](pasteimage/2020-03-17-06-11-48.png)
 
 
-# 3. Azure側の準備
+# 2. Azure側の準備
 
-## 3.1. リソースグループの作成
+## 2.1. リソースグループの作成
 
 1. リソースグループをクリックする<br>
 ![](pasteimage/2020-03-16-03-45-02.png)
@@ -64,7 +64,7 @@ https://azure.microsoft.com/ja-jp/
 4. 作成をクリックする。<br>
 ![](pasteimage/2020-03-16-03-51-44.png)
 
-## 3.2. ストレージアカウントの作成
+## 2.2. ストレージアカウントの作成
 
 1. 作成したリソースグループから「追加」をクリックする<br>
 ![](pasteimage/2020-03-16-03-55-20.png)
@@ -78,7 +78,7 @@ https://azure.microsoft.com/ja-jp/
 4. 作成をクリックする。<br>
 ![](pasteimage/2020-03-16-04-07-01.png)
 
-## 3.3. Face APIの作成
+## 2.3. Face APIの作成
 
 1. 作成したリソースグループから「追加」をクリックする<br>
 ![](pasteimage/2020-03-16-03-55-20.png)
@@ -92,9 +92,9 @@ https://azure.microsoft.com/ja-jp/
 4. Faceのパラメータを指定する<br>
 ![](pasteimage/2020-03-16-04-15-34.png)
 
-# 4. Power Apps のみで顔認証アプリを作成する
+# 3. Power Apps のみで顔認証アプリを作成する
 
-## 4.1. Azure 上の準備
+## 3.1. Azure 上の準備
 
 1. 作成済みのストレージアカウントを開く<br>
 ![](pasteimage/2020-03-16-19-02-25.png)
@@ -112,7 +112,7 @@ https://azure.microsoft.com/ja-jp/
 ![](pasteimage/2020-03-16-19-30-52.png)
 
 
-## 4.2. Power Apps 編集画面を起動
+## 3.2. Power Apps 編集画面を起動
 
 1. Power Apps を開く<br>
 ![](pasteimage/2020-03-16-23-39-29.png)
@@ -126,9 +126,9 @@ https://azure.microsoft.com/ja-jp/
 4. Power Apps 編集画面が起動する<br>
 ![](pasteimage/2020-03-17-00-17-51.png)
 
-## 4.3. 各種画面の作成
+## 3.3. 各種画面の作成
 
-### 4.3.1. Person Group 作成画面
+### 3.3.1. Person Group 作成画面
 Face API の顔認証を行う為には、ユーザーを登録するための Person Groupをあらかじめ作る必要があるため、その画面を作成します。
 
 1. 画面名の変更<br>
@@ -204,7 +204,7 @@ Navigate(PersonAddScreen,ScreenTransition.Fade)
 
 ```
 
-### 4.3.2. Person 作成画面
+### 3.3.2. Person 作成画面
 
 1. 新たに空の画面を作成し、PersonAddScreenとする。<br>
 ![](pasteimage/2020-03-17-02-30-05.png)
@@ -277,7 +277,7 @@ Navigate(FaceAuthenticationScreen,ScreenTransition.Fade)
 If(IsBlank(PersonNameInput.Text),DisplayMode.Disabled,DisplayMode.Edit)
 ```
 
-### 4.3.3. 顔認証画面
+### 3.3.3. 顔認証画面
 
 1. 新たに空の画面を作成し、FaceAuthenticationScreenとする。<br>
 
@@ -315,6 +315,14 @@ Set(FaceIDdata,FaceAPI.Detect(autenticateimageuri.WebUrl,{returnFaceId:"true"}))
 
 //認証結果取得
 Set(FaceVerify,FaceAPI.Verify(First(FaceIDdata).faceId,PersonGroupIDInput.Text,PersonID.personId))
+
+//認証結果を仮テーブルに格納する
+Collect(AuthenticateLog,{
+    DateTime:Now(),
+    AuthResult:If(FaceVerify.isIdentical,"認証OK","認証NG"),
+    MatchLate:FaceVerify.confidence
+    }
+)
 ```
 
 6. 認証結果を表示させるラベルとして AuthenticateResultLabel を作成する
@@ -333,14 +341,125 @@ Set(FaceVerify,FaceAPI.Verify(First(FaceIDdata).faceId,PersonGroupIDInput.Text,P
 
 ![](pasteimage/2020-03-17-05-09-50.png)
 
-## 4.4. テスト
+### 3.3.4.結果画面
+
+1. 新たに空の画面を作成し、ResultScreenとする。<br>
+
+2. ギャラリー (ResultGallary) を作成する<br>
+![](pasteimage/2020-03-17-07-01-59.png)
+
+3. データソースとして AuthenticateLog を選択する<br>
+![](pasteimage/2020-03-17-07-03-30.png)
+
+4. レイアウトに「タイトル、サブタイトル、本文」を選択する<br>
+![](pasteimage/2020-03-17-07-04-54.png)
+
+5. フィールドの編集をクリックし、データを以下のように設定する
+![](pasteimage/2020-03-17-07-07-04.png)
+
+|フィールド名|値|
+|:--|:--|
+|Body1|MatchLate|
+|Subtitle1|AuthResult|
+|Title1|DateTime|
+
+6. ツリービューの Body1 を選択し、Textプロパティを以下のように変更する<br>
+
+``` php
+Concatenate("一致率:",Text(Round((ThisItem.MatchLate*100),2)),"%")
+```
+
+![](pasteimage/2020-03-17-07-11-54.png)
+
+
+### 3.3.5.ホーム画面
+
+1. 新たに空の画面を作成し、HomeScreenとする。<br>
+
+2. タイトル表示のラベル(TitleLabel)を作成する。<br>
+
+|プロパティ名|日本語名|値|
+|:--|:--|:--|
+|Text|テキスト|"顔認証アプリ"|
+|Size|フォント サイズ|40|
+
+3. PersongroupAddScreen に移動するボタン(MovePersonAddSCButton) を作成する。<br>
+
+|プロパティ名|日本語名|値|
+|:--|:--|:--|
+|Text|テキスト|"登録画面"|
+
+4. MovePersonAddSCButton の OnSelect プロパティに以下を指定する。
+
+``` php
+//PersongroupAddScreenに移動
+Navigate(PersongroupAddScreen,ScreenTransition.Fade)
+```
+
+5. FaceAuthenticationScreen に移動するボタン(MoveFaceAuthenticationSCButton) を作成する。<br>
+
+|プロパティ名|日本語名|値|
+|:--|:--|:--|
+|Text|テキスト|"認証画面"|
+
+6. MoveFaceAuthenticationSCButton の OnSelect プロパティに以下を指定する。
+
+``` php
+//PersongroupAddScreenに移動
+Navigate(FaceAuthenticationScreen,ScreenTransition.Fade)
+```
+
+7. MoveFaceAuthenticationSCButton の DisplayMode プロパティに以下を指定する。
+
+``` php
+//Nameが未入力の場合はボタン操作を無効化する
+If(IsBlank(PersonNameInput.Text),DisplayMode.Disabled,DisplayMode.Edit)
+```
+8. ResultScreen に移動するボタン(MoveResultSCButton) を作成する。<br>
+
+|プロパティ名|日本語名|値|
+|:--|:--|:--|
+|Text|テキスト|"履歴画面"|
+
+9. MoveResultSCButton の OnSelect プロパティに以下を指定する。
+
+``` php
+//PersongroupAddScreenに移動
+Navigate(ResultScreen,ScreenTransition.Fade)
+```
+
+### 3.3.6.戻るボタンの設置
+
+1. PersongroupAddScreen に移動する<br>
+
+2. アイコンから「戻る」を選択する<br>
+![](pasteimage/2020-03-17-07-15-48.png)
+
+3. OnSelect プロパティに以下を指定する<br>
+``` php
+//前の画面に戻る
+Back(ScreenTransition.Fade)
+```
+4. HomeScreen以外の全ての画面に、戻るボタンをコピーアンドペーストを行う。<br>
+
+### 3.3.7.HomeScreenの順番を変更
+
+アプリ起動時は必ずHomeScreenを表示する必要があるため
+HomeScreenを一番上に移動する。
+
+![](pasteimage/2020-03-17-07-23-43.png)
+
+![](pasteimage/2020-03-17-07-24-14.png)
+
+
+## 3.4. テスト
 
 画面右上の再生ボタンをクリックすることで
 開いている画面からテストを行うことが可能です。
 
 ![](pasteimage/2020-03-17-05-13-25.png)
 
-## 4.5. 保存
+## 3.5. 保存
 
 ファイルをクリックし、保存をクリックすることで、現在の状態を保存することができます。
 
@@ -351,6 +470,6 @@ Set(FaceVerify,FaceAPI.Verify(First(FaceIDdata).faceId,PersonGroupIDInput.Text,P
 
 ![](pasteimage/2020-03-17-05-17-11.png)
 
-# 5. 試してみる
+# 4. 試してみる
 
 実際に作ったアプリを使ってみて、顔認証ができるか試してみましょう！
