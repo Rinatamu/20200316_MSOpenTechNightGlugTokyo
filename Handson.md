@@ -191,6 +191,9 @@ Face API の顔認証を行う為には、ユーザーを登録するための P
 ``` php
 //Person Group 作成処理
 FaceAPI.CreatePersonGroup(PersonGroupIDInput.Text,PersonGroupNameInput.Text);
+
+//PersonAddScreen に移動
+Navigate(PersonAddScreen,ScreenTransition.Fade)
 ```
 
 13. PersonGroupSubmitButton の DisplayMode プロパティに以下を指定する。
@@ -198,10 +201,6 @@ FaceAPI.CreatePersonGroup(PersonGroupIDInput.Text,PersonGroupNameInput.Text);
 ``` php
 //IDとNameが未入力の場合はボタン操作を無効化する
 If(Or(IsBlank(PersonGroupIDInput.Text),IsBlank(PersonGroupNameInput.Text)),DisplayMode.Disabled,DisplayMode.Edit)
-
-//PersonAddScreen に移動
-Navigate(PersonAddScreen,ScreenTransition.Fade)
-
 ```
 
 ### 3.3.2. Person 作成画面
