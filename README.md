@@ -10,7 +10,7 @@ MS Open Tech Night Glug Tokyoのハンズオン資料になります。<br>
 
 # LICENSE
 
-本資料は BSD 3-Clause License 
+本資料は GNU General Public License version 3 によって保護されています。<br>
 
 # お問い合わせ先
 
