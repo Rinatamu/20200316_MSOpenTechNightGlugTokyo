@@ -291,7 +291,7 @@ If(IsBlank(PersonNameInput.Text),DisplayMode.Disabled,DisplayMode.Edit)
 
 |プロパティ名|日本語名|値|
 |:--|:--|:--|
-|Camera|カメラ|AuthenticateCamSelect|
+|Camera|カメラ|AuthenticateCamSelect.SelectedText.Value|
 |StreamRate|ストリームレート|100|
 
 4. `認証用のボタン(AuthenticateSubmitButton)を作成する。<br>
