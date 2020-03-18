@@ -7,15 +7,10 @@ MS Open Tech Night Glug Tokyoのハンズオン資料になります。<br>
 [ハンズオン資料](https://github.com/rnakamuramartiny/20200316_MSOpenTechNightGlugTokyo/blob/master/Handson.md)
 
 本資料については、再配布可能な資料ですので、社内やコミュニティなどにぜひご活用ください。<br>
-ただし、本資料の無断商用利用は固く禁じます。<br>
-また、無断商用利用については、全部はもちろんのこと、一部改変して利用する際もNGとなります。<br>
-商用利用に該当するか不明な場合は、お気軽にお問い合わせください。<br>
 
-## 商用利用に該当する代表的なパターン
+# LICENSE
 
-* 有償セミナー
-* 企業主催のセミナー（有償・無償問わず）
-* 顧客向けのセミナー
+本資料は BSD 3-Clause License 
 
 # お問い合わせ先
 
