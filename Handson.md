@@ -339,7 +339,7 @@ Set(autenticateimageuri,AzureBlobStorage.CreateShareLinkByPath("<コンテナー
 Set(FaceIDdata,FaceAPI.Detect(autenticateimageuri.WebUrl,{returnFaceId:"true"}));
 
 //認証結果取得
-Set(FaceVerify,FaceAPI.Verify(First(FaceIDdata).faceId,PersonGroupIDInput.Text,PersonID.personId))
+Set(FaceVerify,FaceAPI.Verify(First(FaceIDdata).faceId,PersonGroupIDInput.Text,PersonID.personId));
 
 //認証結果を仮テーブルに格納する
 Collect(AuthenticateLog,{
